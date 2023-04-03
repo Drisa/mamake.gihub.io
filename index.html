@@ -1,27 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>YouTube Video Auto-Change</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with GPT API</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    <h1>Chat with GPT API</h1>
 
-	<div id="video-container"></div>
+    <div id="chat-container">
+        <div id="chat-log"></div>
+        <form id="chat-form">
+            <input type="text" id="chat-input">
+            <button type="submit">Send</button>
+        </form>
+    </div>
 
-	<script>
-		var videoIds = ["dQw4w9WgXcQ", "T7jIMng1T8Q", "9bZkp7q19f0"];
-		var index = 0;
-		
-		function changeVideo() {
-			var videoContainer = document.getElementById("video-container");
-			videoContainer.innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + videoIds[index] + '" frameborder="0" allowfullscreen></iframe>';
-			index = (index + 1) % videoIds.length;
-			setTimeout(changeVideo, 3000);
-		}
+    <script>
+        const API_KEY = "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";
+        const MODEL_ENDPOINT = "https://api.openai.com/v1/engine/davinci-codex/completions";
+        const chatLog = document.getElementById("chat-log");
+        const chatForm = document.getElementById("chat-form");
+        const chatInput = document.getElementById("chat-input");
 
-		changeVideo();
-	</script>
+        async function generateResponse(prompt) {
+            const response = await fetch(MODEL_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${API_KEY}`
+                },
+                body: JSON.stringify({
+                    prompt: prompt,
+                    max_tokens: 50,
+                    temperature: 0.5
+                })
+            });
 
+            const data = await response.json();
+            return data.choices[0].text;
+        }
+
+        chatForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const userInput = chatInput.value;
+            chatInput.value = "";
+
+            const chatBubble = document.createElement("div");
+            chatBubble.classList.add("chat-bubble", "user-bubble");
+            chatBubble.innerText = userInput;
+            chatLog.appendChild(chatBubble);
+
+            const response = await generateResponse(userInput);
+            const responseBubble = document.createElement("div");
+            responseBubble.classList.add("chat-bubble", "response-bubble");
+            responseBubble.innerText = response;
+            chatLog.appendChild(responseBubble);
+        });
+    </script>
 </body>
 </html>
