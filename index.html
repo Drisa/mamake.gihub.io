@@ -1,57 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Nhial Dee</title>
-    <style>
-        /* Internal CSS */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
-            color: #ffffff;
-        }
-        h1 {
-            font-size: 48px;
-            text-align: center;
-            margin-top: 100px;
-        }
-        p {
-            font-size: 24px;
-            text-align: center;
-            margin-top: 50px;
-        }
-        button {
-            display: block;
-            margin: 0 auto;
-            margin-top: 50px;
-            padding: 10px 20px;
-            background-color: #ff0000;
-            border: none;
-            border-radius: 5px;
-            font-size: 24px;
-            color: #ffffff;
-            cursor: pointer;
-        }
-        iframe {
-            display: block;
-            margin: 0 auto;
-            margin-top: 50px;
-            width: 560px;
-            height: 315px;
-            border: none;
-        }
-    </style>
+	<title>YouTube Video Auto-Change</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Nhial Dee</h1>
-    <p>Welcome to my website! I'm a talented artist with a passion for music and creativity.</p>
-    <iframe src="https://www.youtube.com/embed/TBimRHAFXFU" allowfullscreen></iframe>
-    <script>
-        // JavaScript
-        function playMusic() {
-            alert("Playing Nhial Dee's latest song!");
-            // Add code here to play the song
-        }
-    </script>
+
+	<div id="video-container"></div>
+
+	<script>
+		var videoIds = ["dQw4w9WgXcQ", "T7jIMng1T8Q", "9bZkp7q19f0"];
+		var index = 0;
+		
+		function changeVideo() {
+			var videoContainer = document.getElementById("video-container");
+			videoContainer.innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + videoIds[index] + '" frameborder="0" allowfullscreen></iframe>';
+			index = (index + 1) % videoIds.length;
+			setTimeout(changeVideo, 3000);
+		}
+
+		changeVideo();
+	</script>
+
 </body>
 </html>
